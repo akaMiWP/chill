@@ -24,7 +24,7 @@ export default function Index() {
           />
         </View>
 
-        <View className="flex-row justify-end">
+        <View className="flex-row">
           <View className="flex-col gap-2 max-w-[70%] p-4">
             <Text className="text-[#9E8047] font-semibold">
               25-minute Pomodoro
