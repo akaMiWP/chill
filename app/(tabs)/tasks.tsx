@@ -1,6 +1,7 @@
+import AnimatedInputBar from "@/components/AnimatedInputBar";
 import RadioButton from "@/components/RadioButton";
 import React from "react";
-import { FlatList, Text, TouchableOpacity, View } from "react-native";
+import { FlatList, Text, View } from "react-native";
 
 interface Todo {
   name: string;
@@ -38,11 +39,11 @@ const Tasks = () => {
         className="p-4"
       ></FlatList>
 
-      <View className="p-4">
-        <TouchableOpacity className="ml-auto rounded-[28px] bg-[#FABF4F] w-[64px] h-[56px] justify-center">
-          <Text className="pl-4 text-4xl font-light">+</Text>
-        </TouchableOpacity>
-      </View>
+      <AnimatedInputBar
+        onDone={function (taskText: string): void {
+          throw new Error("Function not implemented.");
+        }}
+      />
     </View>
   );
 };
