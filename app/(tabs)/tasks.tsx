@@ -47,7 +47,7 @@ let mockTodos: Todo[] = [
 const TodoItem = ({ todo }: { todo: Todo }) => {
   return (
     <View className="flex-row items-center py-2">
-      <Text className="font-normal">{todo.name}</Text>
+      <Text className="font-normal flex-1">{todo.name}</Text>
       <RadioButton
         className="ml-auto"
         onPressed={(enabled: boolean) => {

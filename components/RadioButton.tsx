@@ -4,11 +4,13 @@ import { TouchableOpacity, View } from "react-native";
 const RadioButton = ({
   onPressed,
   className,
+  finished,
 }: {
   onPressed: (enabled: boolean) => void;
   className: string;
+  finished: boolean;
 }) => {
-  const [enabled, setEnabled] = useState<boolean>(true);
+  const [enabled, setEnabled] = useState<boolean>(finished);
 
   return (
     <TouchableOpacity
