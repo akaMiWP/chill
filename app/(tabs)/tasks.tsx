@@ -3,7 +3,8 @@ import RadioButton from "@/components/RadioButton";
 import { useTodos } from "@/hooks/useTodos";
 import Todo from "@/types/Todo";
 import React from "react";
-import { FlatList, Text, View } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
+import { SwipeListView } from "react-native-swipe-list-view";
 import uuid from "react-native-uuid";
 
 const TodoItem = ({
@@ -14,14 +15,12 @@ const TodoItem = ({
   toggleTodo: (id: string) => void;
 }) => {
   return (
-    <View className="flex-row items-center py-2">
+    <View className="flex-row items-center py-2 bg-white px-4">
       <Text className="font-normal flex-1">{todo.name}</Text>
       <RadioButton
         className="ml-auto"
         finished={todo.finished}
-        onPressed={(enabled: boolean) => {
-          toggleTodo(todo.id);
-        }}
+        onPressed={() => toggleTodo(todo.id)}
       />
     </View>
   );
@@ -34,14 +33,22 @@ const Tasks = () => {
 
   return (
     <View className="flex-1 bg-white">
-      <FlatList
+      <SwipeListView
         data={todos}
         renderItem={({ item }) => (
           <TodoItem todo={item} toggleTodo={toggleTodo} />
         )}
-        keyExtractor={(item, _) => `${item.id}`}
-        className="p-4"
-      ></FlatList>
+        renderHiddenItem={({ item }) => (
+          <View className="flex-row justify-end items-center h-full px-4 bg-red-500">
+            <TouchableOpacity onPress={() => removeTodo(item.id)}>
+              <Text className="text-white font-bold">Delete</Text>
+            </TouchableOpacity>
+          </View>
+        )}
+        rightOpenValue={-75}
+        disableRightSwipe
+        keyExtractor={(item) => `${item.id}`}
+      />
 
       <AnimatedInputBar
         onDone={(taskText: string) => {
