@@ -1,15 +1,9 @@
 import AnimatedInputBar from "@/components/AnimatedInputBar";
 import RadioButton from "@/components/RadioButton";
+import Todo from "@/types/Todo";
 import React, { useState } from "react";
 import { FlatList, Text, View } from "react-native";
 import uuid from "react-native-uuid";
-
-interface Todo {
-  id: string;
-  name: string;
-  createdAt: Date;
-  finished: boolean;
-}
 
 let mockTodos: Todo[] = [
   {
