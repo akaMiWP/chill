@@ -50,6 +50,7 @@ const TodoItem = ({ todo }: { todo: Todo }) => {
       <Text className="font-normal flex-1">{todo.name}</Text>
       <RadioButton
         className="ml-auto"
+        finished={todo.finished}
         onPressed={(enabled: boolean) => {
           console.log("<<<", enabled);
         }}
