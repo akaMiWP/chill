@@ -1,12 +1,18 @@
 import AnimatedInputBar from "@/components/AnimatedInputBar";
 import RadioButton from "@/components/RadioButton";
-import { loadTodos, saveTodos } from "@/storage/todoStorage";
+import { useTodos } from "@/hooks/useTodos";
 import Todo from "@/types/Todo";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { FlatList, Text, View } from "react-native";
 import uuid from "react-native-uuid";
 
-const TodoItem = ({ todo }: { todo: Todo }) => {
+const TodoItem = ({
+  todo,
+  toggleTodo,
+}: {
+  todo: Todo;
+  toggleTodo: (id: string) => void;
+}) => {
   return (
     <View className="flex-row items-center py-2">
       <Text className="font-normal flex-1">{todo.name}</Text>
@@ -14,7 +20,7 @@ const TodoItem = ({ todo }: { todo: Todo }) => {
         className="ml-auto"
         finished={todo.finished}
         onPressed={(enabled: boolean) => {
-          console.log("<<<", enabled);
+          toggleTodo(todo.id);
         }}
       />
     </View>
@@ -22,17 +28,17 @@ const TodoItem = ({ todo }: { todo: Todo }) => {
 };
 
 const Tasks = () => {
-  const [todos, setTodos] = useState<Todo[]>([]);
+  const { todos, addTodo, toggleTodo, removeTodo, isLoading } = useTodos();
 
-  useEffect(() => {
-    loadTodos().then(setTodos);
-  }, []);
+  if (isLoading) return <Text>Loading...</Text>;
 
   return (
     <View className="flex-1 bg-white">
       <FlatList
         data={todos}
-        renderItem={({ item }) => <TodoItem todo={item} />}
+        renderItem={({ item }) => (
+          <TodoItem todo={item} toggleTodo={toggleTodo} />
+        )}
         keyExtractor={(item, _) => `${item.id}`}
         className="p-4"
       ></FlatList>
@@ -45,8 +51,7 @@ const Tasks = () => {
             createdAt: new Date(),
             finished: false,
           };
-          setTodos([...todos, newTodo]);
-          saveTodos([...todos, newTodo]);
+          addTodo(newTodo);
         }}
       />
     </View>
