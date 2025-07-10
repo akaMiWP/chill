@@ -34,7 +34,17 @@ export function useTodos() {
     const updated = todos.map((todo) =>
       todo.id === id ? { ...todo, finished: !todo.finished } : todo
     );
-    save(updated);
+
+    const sorted = updated.sort((a, b) => {
+      if (a.finished === b.finished) {
+        return (
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        );
+      }
+      return a.finished ? 1 : -1; // unfinished first
+    });
+
+    save(sorted);
   };
 
   const removeTodo = (id: string) => {
