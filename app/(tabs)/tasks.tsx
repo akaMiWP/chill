@@ -16,7 +16,13 @@ const TodoItem = ({
 }) => {
   return (
     <View className="flex-row items-center py-2 bg-white px-4">
-      <Text className="font-normal flex-1">{todo.name}</Text>
+      <Text
+        className={`font-normal flex-1 ${
+          todo.finished ? "line-through text-[#9E8047]" : ""
+        }`}
+      >
+        {todo.name}
+      </Text>
       <RadioButton
         className="ml-auto"
         finished={todo.finished}
