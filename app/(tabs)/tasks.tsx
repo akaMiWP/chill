@@ -1,42 +1,10 @@
 import AnimatedInputBar from "@/components/AnimatedInputBar";
 import RadioButton from "@/components/RadioButton";
+import { loadTodos, saveTodos } from "@/storage/todoStorage";
 import Todo from "@/types/Todo";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FlatList, Text, View } from "react-native";
 import uuid from "react-native-uuid";
-
-let mockTodos: Todo[] = [
-  {
-    id: uuid.v4(),
-    name: "Grocery Shopping",
-    createdAt: new Date(),
-    finished: false,
-  },
-  {
-    id: uuid.v4(),
-    name: "Book Appointment",
-    createdAt: new Date(),
-    finished: false,
-  },
-  {
-    id: uuid.v4(),
-    name: "Pay Bills",
-    createdAt: new Date(),
-    finished: false,
-  },
-  {
-    id: uuid.v4(),
-    name: "Workout",
-    createdAt: new Date(),
-    finished: false,
-  },
-  {
-    id: uuid.v4(),
-    name: "Read a Book",
-    createdAt: new Date(),
-    finished: false,
-  },
-];
 
 const TodoItem = ({ todo }: { todo: Todo }) => {
   return (
@@ -54,7 +22,11 @@ const TodoItem = ({ todo }: { todo: Todo }) => {
 };
 
 const Tasks = () => {
-  const [todos, setTodos] = useState(mockTodos);
+  const [todos, setTodos] = useState<Todo[]>([]);
+
+  useEffect(() => {
+    loadTodos().then(setTodos);
+  }, []);
 
   return (
     <View className="flex-1 bg-white">
@@ -74,6 +46,7 @@ const Tasks = () => {
             finished: false,
           };
           setTodos([...todos, newTodo]);
+          saveTodos([...todos, newTodo]);
         }}
       />
     </View>

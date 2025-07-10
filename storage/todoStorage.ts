@@ -20,5 +20,6 @@ export const loadTodos = async () => {
     return parsed;
   } catch (error) {
     console.log("Error loading todos", error);
+    return [];
   }
 };
