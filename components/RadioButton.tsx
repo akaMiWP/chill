@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { TouchableOpacity, View } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 
 const RadioButton = ({
   onPressed,
@@ -21,10 +21,12 @@ const RadioButton = ({
       }}
     >
       <View
-        className={`w-[20px] h-[20px] rounded-[4px] ${
+        className={`w-[20px] h-[20px] rounded-[4px] items-center justify-center ${
           enabled ? "bg-[#E8DECF]" : "border-[#E8DECF] border-2"
         }`}
-      />
+      >
+        {enabled && <Text className="text-[#9E8047] text-[12px]">✓</Text>}
+      </View>
     </TouchableOpacity>
   );
 };
