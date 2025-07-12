@@ -66,7 +66,7 @@ const Tasks = () => {
   if (isLoading) return <Text>Loading...</Text>;
 
   return (
-    <View className="flex-1 bg-white">
+    <View className="flex-1 bg-white py-2">
       <SwipeListView
         data={todos}
         renderItem={({ item }) => (
