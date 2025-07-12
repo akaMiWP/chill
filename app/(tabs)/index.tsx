@@ -1,6 +1,9 @@
-import { Image, Pressable, ScrollView, Text, View } from "react-native";
+import { useRouter } from "expo-router";
+import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
 
 export default function Index() {
+  const router = useRouter();
+
   return (
     <View className="flex-1">
       <ScrollView className="bg-white p-4">
@@ -13,9 +16,12 @@ export default function Index() {
             <Text className="text-[#9E8047] font-semibold">
               Find peace in a short session.
             </Text>
-            <Pressable className="bg-[#F5F0E5] w-[84] h-[32] flex justify-center rounded-2xl mt-4">
+            <TouchableOpacity
+              className="bg-[#F5F0E5] w-[84] h-[32] flex justify-center rounded-2xl mt-4"
+              onPress={() => router.push("/breathing")}
+            >
               <Text className="font-semibold text-center">Start</Text>
-            </Pressable>
+            </TouchableOpacity>
           </View>
 
           <Image
@@ -33,9 +39,12 @@ export default function Index() {
             <Text className="text-[#9E8047] font-semibold">
               Deep work with mindful breaks.
             </Text>
-            <Pressable className="bg-[#F5F0E5] w-[84] h-[32] flex justify-center rounded-2xl mt-4">
+            <TouchableOpacity
+              className="bg-[#F5F0E5] w-[84] h-[32] flex justify-center rounded-2xl mt-4"
+              onPress={() => router.push("/breathing")}
+            >
               <Text className="font-semibold text-center">Start</Text>
-            </Pressable>
+            </TouchableOpacity>
           </View>
 
           <Image
