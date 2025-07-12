@@ -1,5 +1,6 @@
 // app/breathing/index.tsx
 import { Stack } from "expo-router";
+import { useState } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 
 const Display = () => {
@@ -26,18 +27,31 @@ const Display = () => {
   );
 };
 
-const ActionButtons = () => {
+const ActionButtons = ({
+  hasStarted,
+  onPress,
+  onReset,
+}: {
+  hasStarted: boolean;
+  onPress: (hasStarted: boolean) => void;
+  onReset: () => void;
+}) => {
   return (
     <View className="flex-row gap-3 py-3">
-      <TouchableOpacity className="flex-1 h-[40px]">
+      <TouchableOpacity
+        className="flex-1 h-[40px]"
+        onPress={() => onPress(!hasStarted)}
+      >
         <View className="bg-[#FAF2E5] flex-1 rounded-2xl justify-center">
-          <Text className="font-bold text-center">Pause</Text>
+          <Text className="font-bold text-center">
+            {hasStarted ? "Pause" : "Start"}
+          </Text>
         </View>
       </TouchableOpacity>
 
-      <TouchableOpacity className="flex-1 h-[40px]">
-        <View className="bg-[#F2EDE8] flex-1 rounded-2xl justify-center">
-          <Text className="font-bold text-center">Resume</Text>
+      <TouchableOpacity className="flex-1 h-[40px]" onPress={() => onReset()}>
+        <View className="bg-[#ea7070?] flex-1 rounded-2xl justify-center">
+          <Text className="font-bold text-center">Reset</Text>
         </View>
       </TouchableOpacity>
     </View>
@@ -45,6 +59,8 @@ const ActionButtons = () => {
 };
 
 export default function BreathingScreen() {
+  const [hasStarted, setHasStarted] = useState<boolean>(false);
+
   return (
     <>
       <Stack.Screen
@@ -55,7 +71,11 @@ export default function BreathingScreen() {
       />
       <View className="flex-1 bg-white px-4">
         <Display />
-        <ActionButtons />
+        <ActionButtons
+          hasStarted={hasStarted}
+          onPress={setHasStarted}
+          onReset={() => setHasStarted(false)}
+        />
       </View>
     </>
   );
