@@ -47,6 +47,13 @@ export function useTodos() {
     save(sorted);
   };
 
+  const editTodo = (id: string, name: string) => {
+    const updated = todos.map((todo) =>
+      todo.id === id ? { ...todo, name } : todo
+    );
+    save(updated);
+  };
+
   const removeTodo = (id: string) => {
     const filtered = todos.filter((todo) => todo.id !== id);
     save(filtered);
@@ -57,6 +64,7 @@ export function useTodos() {
     isLoading,
     addTodo,
     toggleTodo,
+    editTodo,
     removeTodo,
   };
 }
