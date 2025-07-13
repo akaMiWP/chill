@@ -1,8 +1,75 @@
 // app/breathing/index.tsx
+import { useBreathingDepsStore } from "@/stores/screen/breathingDeps";
+import { SessionType } from "@/types/SessionType";
 import { Stack } from "expo-router";
 import { useEffect, useState } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 
+export default function BreathingScreen() {
+  const timeForSession: Record<SessionType, number> = {
+    [SessionType.short]: 5,
+    [SessionType.pomodoro]: 25,
+  };
+  const session = useBreathingDepsStore((state) => state.session);
+  const [hasStarted, setHasStarted] = useState<boolean>(false);
+  const [reset, setReset] = useState<boolean>(false);
+  const [timeLeft, setTimeLeft] = useState<number>(
+    timeForSession[session] * 60
+  );
+
+  const minutes = Math.floor(timeLeft / 60);
+  const seconds = timeLeft % 60;
+
+  const resetState = () => {
+    setHasStarted(false);
+    setReset(true);
+  };
+
+  useEffect(() => {
+    let interval: number;
+
+    if (hasStarted) {
+      interval = setInterval(() => {
+        setTimeLeft((prevTime) => {
+          if (prevTime <= 1) {
+            clearInterval(interval);
+            resetState();
+            return 0;
+          }
+          return prevTime - 1;
+        });
+      }, 1000);
+    }
+
+    if (reset) {
+      setReset(false);
+      setTimeLeft(timeForSession[session] * 60);
+    }
+
+    return () => clearInterval(interval);
+  }, [hasStarted, reset]);
+
+  return (
+    <>
+      <Stack.Screen
+        options={{
+          title: "Meditation Session",
+          headerBackButtonDisplayMode: "minimal",
+        }}
+      />
+      <View className="flex-1 bg-white px-4">
+        <Display minutes={minutes} seconds={seconds} />
+        <ActionButtons
+          hasStarted={hasStarted}
+          onPress={setHasStarted}
+          onReset={resetState}
+        />
+      </View>
+    </>
+  );
+}
+
+// MARK: - Private
 const Display = ({
   minutes,
   seconds,
@@ -63,59 +130,3 @@ const ActionButtons = ({
     </View>
   );
 };
-
-export default function BreathingScreen() {
-  const [hasStarted, setHasStarted] = useState<boolean>(false);
-  const [reset, setReset] = useState<boolean>(false);
-  const [timeLeft, setTimeLeft] = useState<number>(15 * 60);
-
-  useEffect(() => {
-    let interval: number;
-
-    if (hasStarted) {
-      interval = setInterval(() => {
-        setTimeLeft((prevTime) => {
-          if (prevTime <= 1) {
-            clearInterval(interval);
-            resetState();
-            return 0;
-          }
-          return prevTime - 1;
-        });
-      }, 1000);
-    }
-
-    if (reset) {
-      setReset(false);
-      setTimeLeft(15 * 60);
-    }
-
-    return () => clearInterval(interval);
-  }, [hasStarted, reset]);
-
-  const minutes = Math.floor(timeLeft / 60);
-  const seconds = timeLeft % 60;
-  const resetState = () => {
-    setHasStarted(false);
-    setReset(true);
-  };
-
-  return (
-    <>
-      <Stack.Screen
-        options={{
-          title: "Meditation Session",
-          headerBackButtonDisplayMode: "minimal",
-        }}
-      />
-      <View className="flex-1 bg-white px-4">
-        <Display minutes={minutes} seconds={seconds} />
-        <ActionButtons
-          hasStarted={hasStarted}
-          onPress={setHasStarted}
-          onReset={resetState}
-        />
-      </View>
-    </>
-  );
-}

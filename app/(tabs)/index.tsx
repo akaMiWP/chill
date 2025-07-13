@@ -1,8 +1,11 @@
+import { useBreathingDepsStore } from "@/stores/screen/breathingDeps";
+import { SessionType } from "@/types/SessionType";
 import { useRouter } from "expo-router";
 import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
 
 export default function Index() {
   const router = useRouter();
+  const setSession = useBreathingDepsStore((state) => state.setSession);
 
   return (
     <View className="flex-1">
@@ -18,7 +21,10 @@ export default function Index() {
             </Text>
             <TouchableOpacity
               className="bg-[#F5F0E5] w-[84] h-[32] flex justify-center rounded-2xl mt-4"
-              onPress={() => router.push("/breathing")}
+              onPress={() => {
+                router.push("/breathing", {});
+                setSession(SessionType.short);
+              }}
             >
               <Text className="font-semibold text-center">Start</Text>
             </TouchableOpacity>
@@ -41,7 +47,10 @@ export default function Index() {
             </Text>
             <TouchableOpacity
               className="bg-[#F5F0E5] w-[84] h-[32] flex justify-center rounded-2xl mt-4"
-              onPress={() => router.push("/breathing")}
+              onPress={() => {
+                router.push("/breathing");
+                setSession(SessionType.pomodoro);
+              }}
             >
               <Text className="font-semibold text-center">Start</Text>
             </TouchableOpacity>
